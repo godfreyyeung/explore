@@ -1,9 +1,10 @@
 
 
 var graph = graphMachine();
-graph.start();
-graph.addNode("a");
-graph.update();
+graph.start("body", 960, 500);
+loadNode(graph, 'https://www.wikidata.org/wiki/Special:EntityData/Q6106.rdf');
+
+
 
 
 
@@ -15,4 +16,4 @@ graph.update();
 
 	and/or differing classname
 	look into effects of :sameAs
-*/
+*/	

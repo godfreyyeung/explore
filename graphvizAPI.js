@@ -7,14 +7,9 @@ function graphMachine(){
 
 	// initiate, set up graph whose SVG canvas is within parentDomNode
 	// and has size width*height
-	graph.start = function(parentDomNode, width, height){ 
-		// received confusing "Invalid value for <circle> attribute cx="Nan" cy="Nan"
-		// I should really go back to incremental development... not try to
-		// write an entire set of functions at once
-		// causes really long debugging runs
-		// reason for Nan is that I didn't pass any width or height for the svg into my call to graph.start
+	graph.start = function(parentDomNode, width, height){
 
-		graphVars.svg = d3.select("body").append("svg")
+		graphVars.svg = d3.select(parentDomNode).append("svg")
 		    .attr("width", width)
 		    .attr("height", height);
 
@@ -57,15 +52,33 @@ function graphMachine(){
 
  		// similarly for nodes
  		graphVars.nodeSVG = graphVars.nodeSVG.data(graphVars.force.nodes(), function(d) { return d.id;});
- 		graphVars.nodeSVG.enter().append("circle").attr("class", function(d) { return "node " + d.id; }).attr("r", 50);
+ 		graphVars.nodeSVG.enter().append("circle").attr("class", function(d) { return "node " + d.type; }).attr("r", 50);
  		graphVars.nodeSVG.exit().remove();
 
 		graphVars.force.start();
 	}
 
-	graph.addNode = function(uri){
-		var newNode = {id: uri}; // create new unique node object
-		graphVars.nodes.push(newNode); // push reference to new obj to nodes array
+	// returns reference to new node
+	graph.addNode = function(uri, type, label, rdf){
+		var newNode = {id: uri, type: type, label: label, rdf: rdf}; // create new unique node object
+		graphVars.nodes.push(newNode); // append reference to new obj to nodes array
+		return newNode;
+	}
+
+	function urlcomplete(){
+		
+	}
+
+	graph.addNodeComplete = function(uri, type, label, rdf){
+		var newNode = {id: uri, type: type, label: label, rdf: rdf}; // create new unique node object
+		newRDF = new RDF();
+		newRDF.getRDFURL(uri, urlcomplete);
+		graphVars.nodes.push(newNode); // append reference to new obj to nodes array
+		return newNode;
+	}
+
+	graph.returnRDF = function(node){
+		return node.rdf;
 	}
 
 	return graph;
