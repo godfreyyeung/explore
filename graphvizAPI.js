@@ -12,6 +12,7 @@ function graphMachine(){
 		// I should really go back to incremental development... not try to
 		// write an entire set of functions at once
 		// causes really long debugging runs
+		// reason for Nan is that I didn't pass any width or height for the svg into my call to graph.start
 
 		graphVars.svg = d3.select("body").append("svg")
 		    .attr("width", width)
