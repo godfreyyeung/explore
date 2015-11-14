@@ -3,14 +3,34 @@
 <html>
 
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="d3/d3.min.js"></script>
-<script src="parser.js"></script>
-<script src="main.js"></script>
+<style>
+.link {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
 
+.node {
+  fill: #000;
+  radius: 10px;
+  stroke: #fff;
+  stroke-width:0px;
+}
+
+.node.a { fill: #1f77b4; }
+.node.b { fill: #ff7f0e; }
+.node.c { fill: #2ca02c; }
+
+</style>
 
 </head>
 <body>
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="d3/d3.min.js"></script>
+<script src="parser.js"></script>
+<script src="linkeddataAPI.js"></script>
+<script src="graphvizAPI.js"></script>
+<script src="main.js"></script>
 
 </html>

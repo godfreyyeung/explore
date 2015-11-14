@@ -1,37 +1,26 @@
+// DOM Setup
 
- // Create RDF object
- myRDF=new RDF();
 
- function conceptToDataURL(url){
- 	console.log("url argument:", url);
- 	var tmp = url;
- 	newUrl = tmp.replace("entity/", "wiki/Special:EntityData/");
- 	newUrl = newUrl + ".rdf";
- 	console.log("newurl:", newUrl);
- 	return newUrl;
- }
+// setup graph
 
- myRDF.getRDFURL('https://www.wikidata.org/wiki/Special:EntityData/Q6106.rdf',callback);
 
- function callback() {
+var force = d3.layout.force()
+    .nodes(nodes)
+    .links(links)
+    .charge(-400)
+    .linkDistance(120)
+    .size([width, height])
+    .on("tick", tick);
 
-   name = myRDF.getSingleObject(null, null,"http://schema.org/name", null);
-  console.log("name: ");   // http://www.w3.org/2000/01/rdf-schema#label
-  console.log(name);
-  console.log(typeof(name[0]));
-  // cities=myRDF.Match(null,null,"http://www.wikidata.org/prop/direct/P31",null);
+// ad a node and then update graph
+var a = {id: "a"};
+nodes.push(a);
+start();
 
-  // console.log("cities: ");
-  // console.log(cities);
+/* TODO:
+	// look into effects of diferring
+	// terms used for classing across dbs
 
-  	function callback2(){
-  		typesOfCities = myRDF2.Match(null,null,"http://www.wikidata.org/prop/direct/P31",null);
-		console.log("type of city types 1");
-		console.log(typesOfCities);
-  	}
-
-  	//myRDF2=new RDF();
-	//myRDF2.getRDFURL(conceptToDataURL(cities[0].object), callback2);
-
-}
-
+	// and/or differing classname
+	// look into effects of :sameAs
+	*/
