@@ -65,18 +65,6 @@ function graphMachine(){
 		return newNode;
 	}
 
-	function urlcomplete(){
-		
-	}
-
-	graph.addNodeComplete = function(uri, type, label, rdf){
-		var newNode = {id: uri, type: type, label: label, rdf: rdf}; // create new unique node object
-		newRDF = new RDF();
-		newRDF.getRDFURL(uri, urlcomplete);
-		graphVars.nodes.push(newNode); // append reference to new obj to nodes array
-		return newNode;
-	}
-
 	graph.returnRDF = function(node){
 		return node.rdf;
 	}

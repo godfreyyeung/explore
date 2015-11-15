@@ -1,13 +1,6 @@
-
-
 var graph = graphMachine();
 graph.start("body", 960, 500);
 loadNode(graph, 'https://www.wikidata.org/wiki/Special:EntityData/Q6106.rdf');
-
-
-
-
-
 
 /*
  TODO:
@@ -16,4 +9,4 @@ loadNode(graph, 'https://www.wikidata.org/wiki/Special:EntityData/Q6106.rdf');
 
 	and/or differing classname
 	look into effects of :sameAs
-*/	
+*/
