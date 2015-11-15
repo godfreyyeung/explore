@@ -29,8 +29,6 @@ function loadNodeComplete(graph, rdfObj, uri){
   var rdfLabel = rdfObj.getSingleObject(null, null,"http://schema.org/name", null);
   var newNode = graph.addNode(uri, "instance", rdfLabel, rdfObj);
   graph.update();
-  loadClasses(graph, newNode); //<-- oops, perhaps JS deteceted infinite loop and cut out execution,
-  //preventing more class nodes from spawning?
 }
 
 // acquires classes of which node is an instance

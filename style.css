@@ -4,11 +4,18 @@
 }
 
 .node {
+
+}
+
+.circle {
   fill: #000;
   radius: 10px;
   stroke: #fff;
   stroke-width:0px;
 }
 
-.node.instance { fill: #1f77b4; }
+.label {
+}
+
+.circle.instance { fill: #1f77b4; }
 .node.class { fill: #ff7f0e; }

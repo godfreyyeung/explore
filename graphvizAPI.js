@@ -31,8 +31,9 @@ function graphMachine(){
 	function tick() {
 		// update node and link SVG positions to reflect that of their
 		// underyling counterparts in the force layout graph
-		graphVars.nodeSVG.attr("cx", function(d) { return d.x; })
-		    .attr("cy", function(d) { return d.y; })
+		graphVars.nodeSVG.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+		// graphVars.nodeSVG.attr("cx", function(d) { return d.x; })
+		//     .attr("cy", function(d) { return d.y; })
 
 		graphVars.linkSVG.attr("x1", function(d) { return d.source.x; })
 		    .attr("y1", function(d) { return d.source.y; })
@@ -52,7 +53,22 @@ function graphMachine(){
 
  		// similarly for nodes
  		graphVars.nodeSVG = graphVars.nodeSVG.data(graphVars.force.nodes(), function(d) { return d.id;});
- 		graphVars.nodeSVG.enter().append("circle").attr("class", function(d) { return "node " + d.type; }).attr("r", 50);
+ 		var nodeEnter = graphVars.nodeSVG.enter()
+ 			.append("g")
+ 				.attr("class", "node")
+ 				.call(graphVars.force.drag); 
+ 				// don't append circle/text here so that nodeEnter receives selection of "g"s, 
+ 				// not circles or text
+
+ 		nodeEnter.append("circle")
+ 				.attr("class", function(d) { return "circle " + d.type; }).attr("r", 50)
+
+ 		nodeEnter.append("text")
+ 				.attr("class", "label")
+     			.attr("text-anchor", "middle")
+      			.attr("fill", "white")
+      			.text(function(d) { return d.label });;
+
  		graphVars.nodeSVG.exit().remove();
 
 		graphVars.force.start();
