@@ -1,23 +1,9 @@
 function conceptToDataURL(url){
-	console.log("url argument:", url);
 	var tmp = url;
 	newUrl = tmp.replace("entity/", "wiki/Special:EntityData/");
 	newUrl = newUrl + ".rdf";
-	console.log("newurl:", newUrl);
 	return newUrl;
 }
-
-
-// cities=myRDF.Match(null,null,"http://www.wikidata.org/prop/direct/P31",null);
-
-//   	function callback2(){
-//   		typesOfCities = myRDF2.Match(null,null,"http://www.wikidata.org/prop/direct/P31",null);
-// 		  console.log("type of city types 1");
-// 		  console.log(typesOfCities);
-//   	}
-
-// myRDF2=new RDF();
-// myRDF2.getRDFURL(conceptToDataURL(cities[0].object), callback2);
 
 function loadNode(graph, uri){
   var newRDF = new RDF();

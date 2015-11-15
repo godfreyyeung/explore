@@ -56,8 +56,8 @@ function graphMachine(){
  		var nodeEnter = graphVars.nodeSVG.enter()
  			.append("g")
  				.attr("class", "node")
- 				.call(graphVars.force.drag); 
- 				// don't append circle/text here so that nodeEnter receives selection of "g"s, 
+ 				.call(graphVars.force.drag);
+ 				// don't append circle/text here so that nodeEnter receives selection of "g"s,
  				// not circles or text
 
  		nodeEnter.append("circle")
@@ -68,6 +68,22 @@ function graphMachine(){
      			.attr("text-anchor", "middle")
       			.attr("fill", "white")
       			.text(function(d) { return d.label });;
+
+      	nodeEnter.append("text")
+     			.attr("text-anchor", "middle")
+     			.attr("dy", "1em")
+      			.attr("fill", "white").attr("font-size", "11px").attr("cursor", "pointer")
+      			.text("Parent Classes");
+
+      	nodeEnter.append("text")
+     			.attr("text-anchor", "middle")
+     			.attr("dy", "2em")
+      			.attr("fill", "white").attr("font-size", "11px").attr("cursor", "pointer")
+      			.text("Instance Of")
+      			.on("click", function(datum, idx){ // datum == node obj with all its properties
+      				loadClasses(graph, datum);
+      				// 'this' within this function is the text element, as expected since it is calling object
+      			});
 
  		graphVars.nodeSVG.exit().remove();
 
