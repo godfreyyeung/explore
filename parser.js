@@ -713,7 +713,7 @@ function Match(triples,s,p,o) {
  }
 
 
-function SingleObject(triples,s,p,o) {
+function SingleObject(triples,s,p,o,l) {
 	if (triples==null) {
 		triples=inTriples;
 	}
@@ -726,7 +726,13 @@ function SingleObject(triples,s,p,o) {
 		if (!(p==null || ti.predicate==p)) {
 			match=false;
 		}
+		if (!(p==null || ti.lang==l)) {
+			match=false;
+		}
 		if (match) {
+			console.log("ti.lang: ", ti.lang);
+			console.log("ti.subject: ", ti.subject);
+			console.log("ti.predicate: ", ti.predicate);
 			return(ti.object);
 		}
 	}

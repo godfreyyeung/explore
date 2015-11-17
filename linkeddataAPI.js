@@ -11,8 +11,8 @@ function loadNode(graph, uri){
 }
 
 function loadNodeComplete(graph, rdfObj, uri){
-  console.log("check ", rdfObj);
-  var rdfLabel = rdfObj.getSingleObject(null, null,"http://schema.org/name", null);
+  var rdfLabel = rdfObj.getSingleObject(null, null,"http://schema.org/name", null, "en");
+  console.log("rdfLabel: ", rdfLabel);
   var newNode = graph.addNode(uri, "instance", rdfLabel, rdfObj);
   graph.update();
 }
