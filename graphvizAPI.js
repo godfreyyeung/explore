@@ -105,8 +105,17 @@ function graphMachine(){
 		return newNode;
 	}
 
-	graph.returnRDF = function(node){
+	graph.getRDF = function(node){
 		return node.rdf;
+	}
+
+	graph.getNode = function(uriId){
+		for(var i = 0; i < graphVars.nodes.length; i++){
+			if(graphVars.nodes[i].id == uriId){
+				return graphVars.nodes[i];
+			}
+		}
+		return null;
 	}
 
 	// create link from node1 to node2

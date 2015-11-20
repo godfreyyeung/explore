@@ -730,9 +730,6 @@ function SingleObject(triples,s,p,o,l) {
 			match=false;
 		}
 		if (match) {
-			console.log("ti.lang: ", ti.lang);
-			console.log("ti.subject: ", ti.subject);
-			console.log("ti.predicate: ", ti.predicate);
 			return(ti.object);
 		}
 	}
