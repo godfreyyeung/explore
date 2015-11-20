@@ -46,9 +46,13 @@ function graphMachine(){
 	// binds appropriate behavior to newly entered nodes
 	graph.update = function(){
   		// get update selection // bind 'link' svg elems to 'links' data bound to force graph
+  		// Docs: "The key function returns a string which is used to join a datum with its
+  		// corresponding element, based on the previously-bound data."
+  		// Assuming using this key function the first time that data is bound to links is okay
+  		// because the first time sets
   		graphVars.linkSVG = graphVars.linkSVG.data(graphVars.force.links(), function(d) { return d.source.id + "-" + d.target.id; });
   		// access enter selection containing new nodes and define enter behavior for them
-  		graphVars.linkSVG.enter().insert("line", ".node").attr("class", "link");
+  		graphVars.linkSVG.enter().insert("line", ".node").attr("class", "link"); // ".node" not ".circle"
   		graphVars.linkSVG.exit().remove();
 
  		// similarly for nodes
@@ -73,7 +77,11 @@ function graphMachine(){
      			.attr("text-anchor", "middle")
      			.attr("dy", "1em")
       			.attr("fill", "white").attr("font-size", "11px").attr("cursor", "pointer")
-      			.text("Parent Classes");
+      			.text("Parent Classes")
+      			.on("click", function(datum, idx){ // datum == node obj with all its properties
+      				loadParentClasses(graph, datum);
+      				// 'this' within this function is the text element, as expected since it is calling object
+      			});
 
       	nodeEnter.append("text")
      			.attr("text-anchor", "middle")
@@ -91,14 +99,21 @@ function graphMachine(){
 	}
 
 	// returns reference to new node
-	graph.addNode = function(uri, type, label, rdf){
-		var newNode = {id: uri, type: type, label: label, rdf: rdf}; // create new unique node object
+	graph.addNode = function(nodeId, type, label, rdf){ // notice parameter naming agnostic of usage by other api
+		var newNode = {id: nodeId, type: type, label: label, rdf: rdf}; // create new unique node object
 		graphVars.nodes.push(newNode); // append reference to new obj to nodes array
 		return newNode;
 	}
 
 	graph.returnRDF = function(node){
 		return node.rdf;
+	}
+
+	// create link from node1 to node2
+	graph.addLink = function(node1, node2){
+		var newLink = {source: node1, target: node2};
+		graphVars.links.push(newLink);
+		return newLink;
 	}
 
 	return graph;

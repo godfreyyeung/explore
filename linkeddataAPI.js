@@ -17,11 +17,40 @@ function loadNodeComplete(graph, rdfObj, uri){
   graph.update();
 }
 
+// load a new load into graph representing entity of 'uri' and connected to 'fromNode'
+function loadLinkedNode(graph, uri, fromNode){
+  var newRDF = new RDF();
+  newRDF.getRDFURL(uri, function(){loadLinkedNodeComplete(graph, uri, newRDF, fromNode)});
+}
+
+// creates and adds node newNode to graph and createslink from fromNode to newNode
+// newNode will have 'uri' as its id and 'rdfObj' as its stored rdf data
+function loadLinkedNodeComplete(graph, uriID, rdfObj, fromNode){
+  console.log("load linked node complete called");
+  var rdfLabel = rdfObj.getSingleObject(null, null,"http://schema.org/name", null, "en");
+  console.log("rdfLabel: ", rdfLabel);
+  var newNode = graph.addNode(uriID, "instance", rdfLabel, rdfObj);
+  var newLink = graph.addLink(fromNode, newNode);
+  graph.update();
+}
+
+
 // acquires classes of which node is an instance
 function loadClasses(graph, node){
   var nodeRDF = graph.returnRDF(node);
   var nodeClasses = nodeRDF.Match(null,null,"http://www.wikidata.org/prop/direct/P31",null);
   nodeClasses.forEach(function(curVal, idx, arr){
-    loadNode(graph, conceptToDataURL(curVal.object));
+    loadLinkedNode(graph, conceptToDataURL(curVal.object), node);
+  });
+}
+
+// acquires parent classes
+function loadParentClasses(graph, node){
+  console.log("parent classes clicked");
+  var nodeRDF = graph.returnRDF(node);
+  var nodeParentClasses = nodeRDF.Match(null,null,"http://www.wikidata.org/prop/direct/P279",null);
+  console.log(nodeClasses);
+  nodeParentClasses.forEach(function(curVal, idx, arr){
+    loadLinkedNode(graph, conceptToDataURL(curVal.object), node);
   });
 }
