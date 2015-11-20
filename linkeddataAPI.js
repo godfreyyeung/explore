@@ -30,7 +30,10 @@ function loadLinkedNodeComplete(graph, uriID, rdfObj, fromNode){
   var rdfLabel = rdfObj.getSingleObject(null, null,"http://schema.org/name", null, "en");
   console.log("rdfLabel: ", rdfLabel);
   var newNode = graph.addNode(uriID, "instance", rdfLabel, rdfObj);
-  var newLink = graph.addLink(fromNode, newNode);
+  var newLink = graph.addLink(fromNode, newNode); // why some parent nodes don't render is because they already exist
+          // (there is already a node with that id)
+          // but we createa  new node for them here. This confuses d3.
+          // must perform check for node existence, and execute addLink based on that condition.
   graph.update();
 }
 
@@ -49,7 +52,7 @@ function loadParentClasses(graph, node){
   console.log("parent classes clicked");
   var nodeRDF = graph.returnRDF(node);
   var nodeParentClasses = nodeRDF.Match(null,null,"http://www.wikidata.org/prop/direct/P279",null);
-  console.log(nodeClasses);
+  console.log(nodeParentClasses);
   nodeParentClasses.forEach(function(curVal, idx, arr){
     loadLinkedNode(graph, conceptToDataURL(curVal.object), node);
   });
