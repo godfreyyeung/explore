@@ -5,6 +5,15 @@ function conceptToDataURL(url){
 	return newUrl;
 }
 
+// use an RDF obj to determine if entity it represents is a class
+function isClassFromRDF(rdfObj){
+    var rdfObjClasses = rdfObj.Match(null,null,"http://www.wikidata.org/prop/direct/P31",null);
+    if(rdfObjClasses.length == 0)
+      return 1; // is a class
+    else
+      return 0; // is an instance
+}
+
 function loadNode(graph, uri){
   var newRDF = new RDF();
   newRDF.getRDFURL(uri, function(){loadNodeComplete(graph, newRDF, uri)});

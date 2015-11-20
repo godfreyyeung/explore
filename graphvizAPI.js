@@ -26,6 +26,12 @@ function graphMachine(){
 		    .linkDistance(120)
 		    .size([width, height])
 		    .on("tick", tick);
+
+		graphVars.force.drag().on("dragstart", fixNodePosition);
+	}
+
+	function fixNodePosition(d){
+          d3.select(this).classed("fixed", d.fixed = true);
 	}
 
 	function tick() {
