@@ -1,3 +1,6 @@
+// "class" B of entity A == entity A is instance of B
+// "parent class" B of entity A == entity A is a class and is instance of B
+
 function conceptToDataURL(url){
 	var tmp = url;
 	newUrl = tmp.replace("entity/", "wiki/Special:EntityData/");
@@ -5,13 +8,14 @@ function conceptToDataURL(url){
 	return newUrl;
 }
 
-// use an RDF obj to determine if entity it represents is a class
+// use an RDF obj to determine if entity that it represents is a class
+// if no parent classes are found, the entity is considered simply an instance
 function isClassFromRDF(rdfObj){
-    var rdfObjClasses = rdfObj.Match(null,null,"http://www.wikidata.org/prop/direct/P31",null);
-    if(rdfObjClasses.length == 0)
-      return 1; // is a class
+    var rdfObjParentClasses = rdfObj.Match(null,null,"http://www.wikidata.org/prop/direct/P279",null);
+    if(rdfObjParentClasses.length == 0)
+      return 1; // is an instance
     else
-      return 0; // is an instance
+      return 0; // is a class
 }
 
 function loadNode(graph, uri){
