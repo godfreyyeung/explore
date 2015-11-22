@@ -28,6 +28,22 @@ function graphMachine(){
 		    .on("tick", tick);
 
 		graphVars.force.drag().on("dragstart", fixNodePosition);
+
+		// create an arrowhead definition
+		graphVars.svg.append("defs").selectAll("marker")
+		    .data(["arrowHeadId"])
+		  .enter().append("marker")
+		    .attr("id", function(d) { return d; })
+		    .attr("viewBox", "0 -5 10 10")
+		    .attr("refX", 65) // really just need to adjust this in order to accomodate node radius 50
+		    .attr("refY", 0)
+		    .attr("markerWidth", 6)
+		    .attr("markerHeight", 6)
+		    .attr("orient", "auto")
+		  .append("path")
+		    .attr("d", "M0,-5L10,0L0,5")
+		    .style("stroke", "black")
+		    .style("opacity", "1");
 	}
 
 	function fixNodePosition(d){
@@ -58,7 +74,8 @@ function graphMachine(){
   		// because the first time sets
   		graphVars.linkSVG = graphVars.linkSVG.data(graphVars.force.links(), function(d) { return d.source.id + "-" + d.target.id; });
   		// access enter selection containing new nodes and define enter behavior for them
-  		graphVars.linkSVG.enter().insert("line", ".node").attr("class", "link"); // ".node" not ".circle"
+  		graphVars.linkSVG.enter().insert("line", ".node").attr("class", "link")
+  		.style("marker-end",  "url(#arrowHeadId)"); // Modified line ; // ".node" not ".circle"
   		graphVars.linkSVG.exit().remove();
 
  		// similarly for nodes
@@ -76,12 +93,16 @@ function graphMachine(){
  		nodeEnter.append("text")
  				.attr("class", "label")
      			.attr("text-anchor", "middle")
+      			.attr("dy", "-.5em") // need to set dy else wrap() complains of dy="Nan"?
       			.attr("fill", "white")
-      			.text(function(d) { return d.label });;
+      			.attr("stroke", "black")
+      			.attr("stroke-width", ".5")
+      			.text(function(d) { return d.label });
+				//.call(wrap, 70); // first arg passed to wrap is the selected obj calling wrap, in which case it is <text>
 
       	nodeEnter.append("text")
      			.attr("text-anchor", "middle")
-     			.attr("dy", "1em")
+     			.attr("dy", "1.5em")
       			.attr("fill", "white").attr("font-size", "11px").attr("cursor", "pointer")
       			.text("Parent Classes")
       			.on("click", function(datum, idx){ // datum == node obj with all its properties
@@ -91,7 +112,7 @@ function graphMachine(){
 
       	nodeEnter.append("text")
      			.attr("text-anchor", "middle")
-     			.attr("dy", "2em")
+     			.attr("dy", "2.5em")
       			.attr("fill", "white").attr("font-size", "11px").attr("cursor", "pointer")
       			.text("Instance Of")
       			.on("click", function(datum, idx){ // datum == node obj with all its properties
@@ -129,6 +150,31 @@ function graphMachine(){
 		var newLink = {source: node1, target: node2};
 		graphVars.links.push(newLink);
 		return newLink;
+	}
+
+	/* misc utils */
+	function wrap(text, width) {
+	  text.each(function() {
+	    var text = d3.select(this),
+	        words = text.text().split(/\s+/).reverse(),
+	        word,
+	        line = [],
+	        lineNumber = 0,
+	        lineHeight = 1.1, // ems
+	        y = text.attr("y"),
+	        dy = parseFloat(text.attr("dy")),
+	        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+	    while (word = words.pop()) {
+	      line.push(word);
+	      tspan.text(line.join(" "));
+	      if (tspan.node().getComputedTextLength() > width) {
+	        line.pop();
+	        tspan.text(line.join(" "));
+	        line = [word];
+	        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+	      }
+	    }
+	  });
 	}
 
 	return graph;

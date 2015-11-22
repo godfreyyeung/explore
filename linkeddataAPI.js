@@ -10,7 +10,7 @@ function conceptToDataURL(url){
 
 // use an RDF obj to determine if entity that it represents is a class
 // if no parent classes are found, the entity is considered simply an instance
-function isClassFromRDF(rdfObj){
+function isInstanceFromRDF(rdfObj){
     var rdfObjParentClasses = rdfObj.Match(null,null,"http://www.wikidata.org/prop/direct/P279",null);
     if(rdfObjParentClasses.length == 0)
       return 1; // is an instance
@@ -20,12 +20,17 @@ function isClassFromRDF(rdfObj){
 
 function loadNode(graph, uri){
   var newRDF = new RDF();
-  newRDF.getRDFURL(uri, function(){loadNodeComplete(graph, newRDF, uri)});
+  newRDF.getRDFURL(uri, function(){loadNodeComplete(graph, uri, newRDF)});
 }
 
-function loadNodeComplete(graph, rdfObj, uri){
+function loadNodeComplete(graph, uri, rdfObj){
   var rdfLabel = rdfObj.getSingleObject(null, null,"http://schema.org/name", null, "en");
-  var newNode = graph.addNode(uri, "instance", rdfLabel, rdfObj);
+  var newNode;
+  if(isInstanceFromRDF(rdfObj)){
+    newNode = graph.addNode(uri, "instance", rdfLabel, rdfObj);
+  } else {
+    newNode = graph.addNode(uri, "class", rdfLabel, rdfObj);
+  }
   graph.update();
 }
 
@@ -47,9 +52,13 @@ function loadLinkedNodeComplete(graph, uriID, rdfObj, fromNode){
     newLink = graph.addLink(fromNode, existingLink);
   } else {
     console.log("NEW NEW NEW");
-    rdfLabel = rdfObj.getSingleObject(null, null,"http://schema.org/name", null, "en");
+    rdfLabel = rdfObj.getSingleObject(null,   null,"http://schema.org/name", null, "en");
     console.log("rdfLabel: ", rdfLabel);
-    newNode = graph.addNode(uriID, "instance", rdfLabel, rdfObj);
+    if(isInstanceFromRDF(rdfObj)){
+      newNode = graph.addNode(uriID, "instance", rdfLabel, rdfObj);
+    } else {
+      newNode = graph.addNode(uriID, "class", rdfLabel, rdfObj);
+    }
     newLink = graph.addLink(fromNode, newNode);
   }
   graph.update();

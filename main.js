@@ -1,6 +1,17 @@
 var graph = graphMachine();
-graph.start("body", 1080, 900);
+graph.start(".svgArea", 1080, 900);
 loadNode(graph, 'https://www.wikidata.org/wiki/Special:EntityData/Q6106.rdf');
+
+$('#add').on('click', function () {
+    var $btn = $(this).button('loading')
+
+    var uri = $("#basic-url").val();
+    console.log(uri);
+    console.log(typeof(uri));
+    loadNode(graph, uri);
+
+    $btn.button('reset')
+  })
 
 
 
