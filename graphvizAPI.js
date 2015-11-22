@@ -120,6 +120,17 @@ function graphMachine(){
       				// 'this' within this function is the text element, as expected since it is calling object
       			});
 
+      	nodeEnter.append("text")
+     			.attr("text-anchor", "middle")
+     			.attr("dx", "2.5em")
+     			.attr("dy", "-2.5em")
+      			.attr("fill", "white").attr("font-size", "11px").attr("cursor", "pointer")
+      			.text("X")
+      			.on("click", function(datum, idx){ // datum == node obj with all its properties
+      				graph.removeNode(datum);
+      				// 'this' within this function is the text element, as expected since it is calling object
+      			});
+
  		graphVars.nodeSVG.exit().remove();
 
 		graphVars.force.start();
@@ -143,6 +154,25 @@ function graphMachine(){
 			}
 		}
 		return null;
+	}
+
+	function removeRelatedLinks(node){
+		for(var i = 0; i < graphVars.links.length; i++){
+			if(graphVars.links[i].source == node || graphVars.links[i].target == node 
+				|| graphVars.links[i].source.id == node.id || graphVars.links[i].target.id == node.id){
+				graphVars.links.splice(i, 1);
+			}
+		}
+	}
+
+	graph.removeNode = function(node){
+		var nodeIdx = graphVars.nodes.indexOf(node);
+		console.log("has index:", nodeIdx);
+		graphVars.nodes.splice(nodeIdx, 1);
+		console.log(graphVars.links);
+		removeRelatedLinks(node);
+		console.log(graphVars.links);
+		graph.update();
 	}
 
 	// create link from node1 to node2
