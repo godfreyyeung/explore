@@ -128,6 +128,7 @@ function graphMachine(){
       			.text("X")
       			.on("click", function(datum, idx){ // datum == node obj with all its properties
       				graph.removeNode(datum);
+      				graph.update();
       				// 'this' within this function is the text element, as expected since it is calling object
       			});
 
@@ -159,8 +160,15 @@ function graphMachine(){
 	function removeRelatedLinks(node){
 		for(var i = 0; i < graphVars.links.length; i++){
 			if(graphVars.links[i].source == node || graphVars.links[i].target == node 
-				|| graphVars.links[i].source.id == node.id || graphVars.links[i].target.id == node.id){
+				|| graphVars.links[i].source.id == node.id || graphVars.links[i].target.id == node.id
+				|| graphVars.links[i].source.label == node.label || graphVars.links[i].target.label == node.label
+				){
+				console.log("match");
+				console.log("graphVars.links source:", graphVars.links[i].source)
+				console.log("graphVars.links target:", graphVars.links[i].target)
+				console.log("node: ", node);
 				graphVars.links.splice(i, 1);
+				i = i -1;
 			}
 		}
 	}
@@ -172,7 +180,7 @@ function graphMachine(){
 		console.log(graphVars.links);
 		removeRelatedLinks(node);
 		console.log(graphVars.links);
-		graph.update();
+		console.log(node);
 	}
 
 	// create link from node1 to node2
