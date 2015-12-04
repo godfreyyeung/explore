@@ -5,13 +5,18 @@ function graphMachine(){
 
 	var graphVars = {};
 
+	function setForceSize(parentDomNode){
+		graphVars.width = $(parentDomNode).width(), graphVars.height = $(parentDomNode).height();
+		graphVars.force.size([graphVars.width, graphVars.height]).resume();
+	}
+
 	// initiate, set up graph whose SVG canvas is within parentDomNode
 	// and has size width*height
-	graph.start = function(parentDomNode, width, height){
+	// parentDomNode and svg should be styled to 100% width and height in CSS
+	graph.start = function(parentDomNode){
 
-		graphVars.svg = d3.select(parentDomNode).append("svg")
-		    .attr("width", width)
-		    .attr("height", height);
+		graphVars.parentDomNode = parentDomNode;
+		graphVars.svg = d3.select(graphVars.parentDomNode).append("svg");
 
 		graphVars.nodes = [];
 		graphVars.links = [];
@@ -24,8 +29,11 @@ function graphMachine(){
 		    .links(graphVars.links)
 		    .charge(-400)
 		    .linkDistance(120)
-		    .size([width, height])
 		    .on("tick", tick);
+
+		setForceSize(graphVars.parentDomNode);
+
+		window.onresize = function(){setForceSize(graphVars.parentDomNode)};
 
 		graphVars.force.drag().on("dragstart", fixNodePosition);
 

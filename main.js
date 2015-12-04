@@ -1,5 +1,5 @@
 var graph = graphMachine();
-graph.start(".svgArea", 1080, 900);
+graph.start(".svgArea");
 loadNode(graph, 'https://www.wikidata.org/wiki/Special:EntityData/Q6106.rdf');
 
 $('#add').on('click', function () {
