@@ -11,15 +11,18 @@
 </head>
 
 <body>
-	<div class="svgArea col-md-9"></div>
-	<div class="sidebar col-md-3">
-		<label class="sidebar-label" for="basic-url">Enter an entity/resource url:</label>
-		<div class="input-group">
-		  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+	<div class="container" style="width: 100%;">
+		<div class="svgArea col-md-9"></div>
+		<div class="sidebar col-md-3">
+			<h2>WikiData Graph Database Explorer</h2>
+			<div class="input-group" style="width: 100%">
+			  Enter a WikiData Entity's ID or its resolved URL.
+			  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" style="width: 100%">
+			</div>
+			<button type="button" id="add" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off" style="margin-top: 10px;">
+			  Add
+			</button>
 		</div>
-		<button type="button" id="add" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
-		  Add
-		</button>
 	</div>
 </body>
 

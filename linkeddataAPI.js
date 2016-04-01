@@ -8,6 +8,18 @@ function conceptToDataURL(url){
 	return newUrl;
 }
 
+
+function wikiToDataURL(url){
+  if(url[0] == "Q"){
+    newUrl = "https://www.wikidata.org/wiki/Special:EntityData/" + url + ".rdf";
+  } else {
+    var tmp = url;
+    newUrl = tmp.replace("wiki/", "wiki/Special:EntityData/");
+    newUrl = newUrl + ".rdf";
+  }
+  return newUrl;
+}
+
 // use an RDF obj to determine if entity that it represents is a class
 // if no parent classes are found, the entity is considered simply an instance
 function isInstanceFromRDF(rdfObj){

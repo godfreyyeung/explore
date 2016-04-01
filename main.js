@@ -8,7 +8,7 @@ $('#add').on('click', function () {
     var uri = $("#basic-url").val();
     console.log(uri);
     console.log(typeof(uri));
-    loadNode(graph, uri);
+    loadNode(graph, wikiToDataURL(uri));
 
     $btn.button('reset')
   })
